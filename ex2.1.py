@@ -7,24 +7,24 @@
 
 # let x be the numer of attempts possible
 # one minute is 60 seconds
-x = 60 * 1/40 #10**12
-
+x = 60 * float(1)/float(40) #10**12
+print "Attempts per minute:", x
 # one hours is 60 minutes
 
 x = x * 60
-
+print "Attempts per hours:", x 
 # one day is 24 hours
 
 x = x * 24
-
+print "Attempts per day:", x 
 # one year is about 365.25 days
 
-x = float(x * 365.25)
-
+x = float(x) * float(365.25)
+print "Attempts per year:", x 
 # for three years
 
 x = 3 * x
-print "The number of possible attempts.", x 
+print "The attempts in three years:", x 
 # Let y be the number of possible code permutaions
 # Let z be ther number of digits
 
@@ -34,4 +34,5 @@ print "The number of possible attempts.", x
 # so let y = x and solve for z
 import math
 
-print math.ceil(math.log10(x))
+print "Recommended iPhone screen lock length:", math.ceil(math.log10(x))
+print "Number of possibily passwords", 10**7, "<- Ten Million"
