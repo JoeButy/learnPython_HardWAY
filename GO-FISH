@@ -10,7 +10,9 @@ global playerNames
 global turn
 global two_OR_four
 global score
+global go_again
 
+go_again = False
 deck = []
 turn = 0
 
@@ -59,7 +61,7 @@ def target(asker):
 	
 	elif not indexNotAsker or foundName == asker:
 		print "You can not ask yourself for cards. Players are: %s" \
-			% (desired_target, ", ".join(playerNames))
+			% ", ".join(playerNames)
 		desired_target = target(asker)
 	
 	elif not int_input:
@@ -178,7 +180,11 @@ def go_fish(rank):
 		print "Go again!"
 	else:
 		print fish
+		global go_again
+		go_again = True
 		turn += 1
+		raw_input("Turn complete. Hit enter to clear terminal.")
+		clear_terminal()
 
 
 def remove_rank(rank, i, limit = 4):
@@ -244,13 +250,19 @@ def clear_terminal():
 def ask():
 # 	printPlay()
 # 	print deck[-1]
-	clear_terminal()
+
 	play_pairs()
 	write_to_file()
 	target_player = ""
 	asker_index = turn % player_count
 	asker = playerNames[asker_index]
-	print "It is %s's turn. " % asker
+	if not go_again:
+		print "It is %s's turn. " % asker
+		raw_input("%s hit enter when you are ready to begin." % asker)
+	else:
+		pass
+	global go_again
+	go_again = True
 	print "%s's cards: " % asker , cardsInPlay[turn % player_count]
 	target_index = target(asker)
 	target_name = playerNames[int(target_index)]
