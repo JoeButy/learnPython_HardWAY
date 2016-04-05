@@ -1,3 +1,5 @@
+# create a deck of cards
+
 import random
 
 global deck 
@@ -13,7 +15,7 @@ deck = []
 turn = 0
 
 def starting_deal():
-	#random.shuffle(deck)
+	random.shuffle(deck)
 	global cardsInPlay
 	cardsInPlay = [[] for c in range(0,player_count)]
 	
@@ -27,6 +29,7 @@ def printPlay():
 		print "Player: ", playerNames[player], "(", player, ")"
 		print "Cards: ", cardsInPlay[player]
 	print "*****" * 4
+	
 # now that each player had a hand of with x number of cards.
 # we need to make the rules to actually play the game. 
 # for a turn a player number ask another player if that other player has a 
@@ -55,7 +58,8 @@ def target(asker):
 		print "Greate we have player %s, %s" % (desired_target, playerNames[int(desired_target)])
 	
 	elif not indexNotAsker or foundName == asker:
-		print "You can not ask yourself for cards."
+		print "You can not ask yourself for cards. Players are: %s" \
+			% (desired_target, ", ".join(playerNames))
 		desired_target = target(asker)
 	
 	elif not int_input:
@@ -119,6 +123,21 @@ def ask_for_rank():
 			
 	return ask_rank
 
+def write_to_file():
+	#write master file.
+	fName = "Go_fish"
+	master_file = open(fName + "_MasterFile.csv","w")
+	for player in range(0, player_count):
+		player_Name = playerNames[player]
+		master_file.write(player_Name + ":\t")
+		playerFileName =  player_Name + "_.csv"
+		playerFile = open(playerFileName, "w")
+		for card in cardsInPlay[player]:
+			master_file.write(card + ";")
+			playerFile.write(card + "\n")
+		master_file.write("\n\n")
+	
+
 def give_cards(asker, target, rank):
 	target_count = in_hand(rank,target)
 	target = int(target)
@@ -160,7 +179,7 @@ def go_fish(rank):
 	else:
 		print fish
 		turn += 1
-	print cardsInPlay[turn % player_count]
+
 
 def remove_rank(rank, i, limit = 4):
 	k = 0
@@ -218,16 +237,21 @@ def play_pairs():
 	
 	else:
 		pass		
-					
+	
+def clear_terminal():
+	print(chr(27) + "[2J")			
 
 def ask():
 # 	printPlay()
 # 	print deck[-1]
+	clear_terminal()
 	play_pairs()
+	write_to_file()
 	target_player = ""
 	asker_index = turn % player_count
 	asker = playerNames[asker_index]
 	print "It is %s's turn. " % asker
+	print "%s's cards: " % asker , cardsInPlay[turn % player_count]
 	target_index = target(asker)
 	target_name = playerNames[int(target_index)]
 	ask_rank = ask_for_rank()
