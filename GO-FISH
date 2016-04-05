@@ -1,0 +1,264 @@
+import random
+
+global deck 
+global player_count
+global cardsInPlay
+global starting_count
+global playerNames
+global turn
+global two_OR_four
+global score
+
+deck = []
+turn = 0
+
+def starting_deal():
+	#random.shuffle(deck)
+	global cardsInPlay
+	cardsInPlay = [[] for c in range(0,player_count)]
+	
+	for i in range(0, starting_card_count):
+		for player in range(0,player_count):
+			cardsInPlay[player].append(deck.pop())
+			
+def printPlay():
+	print "*****" * 4
+	for player in range(0,player_count):
+		print "Player: ", playerNames[player], "(", player, ")"
+		print "Cards: ", cardsInPlay[player]
+	print "*****" * 4
+# now that each player had a hand of with x number of cards.
+# we need to make the rules to actually play the game. 
+# for a turn a player number ask another player if that other player has a 
+# card whose value matches the vale of one of the cards in the players had. 
+
+def target(asker):
+	desired_target = raw_input("Which player would you like to ask? ")
+	foundName = desired_target in playerNames
+	int_input = isNum(desired_target)
+		
+	if int_input:
+		foundIndex = int(desired_target) in range(0,player_count)
+		if foundIndex:
+			indexNotAsker = str(playerNames[int(desired_target)]) <> asker
+		else:
+			indexNotAsker = True
+	else:
+		foundIndex = False
+		indexNotAsker = False
+	
+	if foundName and foundName <> asker:
+		print "Great we have player %s." % desired_target
+		foundIndex = True
+	
+	elif foundIndex and indexNotAsker:
+		print "Greate we have player %s, %s" % (desired_target, playerNames[int(desired_target)])
+	
+	elif not indexNotAsker or foundName == asker:
+		print "You can not ask yourself for cards."
+		desired_target = target(asker)
+	
+	elif not int_input:
+		print "We don't have a player %s, we have %s." % (desired_target, ", ".join(playerNames))
+		desired_target = target(asker)
+	
+	else:	
+		index_list = [str(x) for x in range(0,player_count)]
+		print "We don't have a player %s, we have %s." % (desired_target, ", ".join(index_list))
+		desired_target = target(asker)
+	
+	return desired_target
+
+def isNum(inPut):
+	digits = ["0","1","2","3","4","5","6","7","8","9"]
+	for i in list(inPut):
+	
+		if not i in digits:
+			choice_is_num = False
+			break
+			
+		else:
+			choice_is_num = True	
+	
+	return choice_is_num
+
+
+def in_hand(ask_rank, asker_index):
+	asker_hand = cardsInPlay[int(asker_index)]
+	count = 0
+	for card in asker_hand:
+		
+		if any(ask_rank in s for s in card.split(' ')):
+			count += 1
+			
+		elif "^" in ask_rank:
+			exit(0)
+		else:
+			count += 0
+	
+	return count
+	
+def ask_for_rank():
+	ask_rank = raw_input("What rank would you like? ")
+	asker_index = turn % player_count
+	ask_is_rank = ask_rank in ranks
+	ask_count = in_hand(ask_rank, asker_index)
+
+	if not ask_is_rank:
+		print "You must ask for a rank."
+		print "The ranks are: %s" % ", ".join(ranks)
+		ask_rank = ask_for_rank()
+		
+	elif ask_count == 0:
+		print "You can not ask for a Rank you do not have."
+		print "The ranks you have are: ", cardsInPlay[asker_index]
+		ask_rank = ask_for_rank()
+		
+	else:
+		pass
+			
+	return ask_rank
+
+def give_cards(asker, target, rank):
+	target_count = in_hand(rank,target)
+	target = int(target)
+	target_name = playerNames[target]
+	i = 0
+	cards_given = []
+	
+	while i <= len(cardsInPlay[target]) - 1:
+		card = cardsInPlay[target][i]
+		
+		if any(rank in s for s in card.split(' ')):
+			cards_given.append(''.join(cardsInPlay[target][i]))
+			cardsInPlay[asker].append(cardsInPlay[target].pop(i))
+
+		else:
+			i += 1
+		
+		if len(cards_given) > 1:
+			conjunction = str(len(cards_given))
+		elif rank in ["Ace", "8"]:
+			conjunction = "an"
+		else:
+			conjunction = "a"
+			
+	print "%s says, \"Yes I do. I have %s %s.\"" \
+		% (target_name, conjunction, rank), \
+		"\n\"Go again!\""
+	print cardsInPlay[asker]
+
+
+def go_fish(rank):
+	global turn
+	player_index = turn % player_count
+	fish = deck.pop()
+	cardsInPlay[player_index].append(fish)
+	if fish.split(' ')[0] == rank:
+		print "Got rank that was asked for, %s!" % fish
+		print "Go again!"
+	else:
+		print fish
+		turn += 1
+	print cardsInPlay[turn % player_count]
+
+def remove_rank(rank, i, limit = 4):
+	k = 0
+	count = 0
+	while k <= len(cardsInPlay[i]) - 1:
+		
+		if cardsInPlay[i][k].split(' ')[0] == rank:
+			cardsInPlay[i].pop(k)
+			count += 1
+			
+			if count >= limit:
+				break
+			
+			else:
+				pass
+		
+		else:
+			k += 1
+
+def score_count(name, books, rank):
+	print "Player: %s scores %d on %s 's" % (name, books, rank)
+
+def score_report():
+	print "Score Totals:"
+	for i in range(0, player_count):
+		print "Player: %s \tScore: %d" % (playerNames[i], score[i])
+
+def play_pairs():
+	books_total = 0 
+	for i in range(0, player_count):
+		books_made = 0 
+		k = 0
+		while k <= len(cardsInPlay[i]) - 1:
+			rank = cardsInPlay[i][k].split(' ')[0]
+			original_count = in_hand(rank,i)
+			books = float(original_count * 2) / (book_size * 2)
+			
+			if books == 1 or books == 2:
+				remove_rank(rank, i)
+				score_count(playerNames[i], books, rank)
+				books_made += books
+			
+			elif books > 1:
+				remove_rank(rank, i, 2)
+				score_count(playerNames[i], books, rank)
+			
+			else:
+				pass
+			k += 1
+		books_total += books_made
+		score[i] += books_made
+	
+	if books_total > 0:
+		score_report()
+	
+	else:
+		pass		
+					
+
+def ask():
+# 	printPlay()
+# 	print deck[-1]
+	play_pairs()
+	target_player = ""
+	asker_index = turn % player_count
+	asker = playerNames[asker_index]
+	print "It is %s's turn. " % asker
+	target_index = target(asker)
+	target_name = playerNames[int(target_index)]
+	ask_rank = ask_for_rank()
+	print "%s says, \"%s, do you have any %s's?\"" % (asker, target_name, ask_rank)
+	target_count = in_hand(ask_rank,target_index)
+	if target_count > 0:
+		give_cards(asker_index, target_index, ask_rank)
+	else:
+		print "%s says, \"GO FISH!\"" % (target_name)
+		go_fish(ask_rank)
+	ask()
+
+#########
+#########
+
+suits = ["Clubs", "Diamonds", "Hearts", "Spades"]
+ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"]
+
+
+playerNames = ["Jack", "Jill", "John"]
+starting_card_count = 5
+book_size = 4
+
+player_count = len(playerNames)
+score = [0] * player_count
+
+for suit in reversed(suits):
+	for rank in reversed(ranks):
+		deck.append(rank + " of " + suit)
+turn = 0
+print turn
+starting_deal()
+# printPlay()
+ask()
