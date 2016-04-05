@@ -1,3 +1,5 @@
+# create a deck of cards
+
 import random
 
 global deck 
@@ -13,7 +15,7 @@ deck = []
 turn = 0
 
 def starting_deal():
-	#random.shuffle(deck)
+	random.shuffle(deck)
 	global cardsInPlay
 	cardsInPlay = [[] for c in range(0,player_count)]
 	
@@ -27,6 +29,7 @@ def printPlay():
 		print "Player: ", playerNames[player], "(", player, ")"
 		print "Cards: ", cardsInPlay[player]
 	print "*****" * 4
+	
 # now that each player had a hand of with x number of cards.
 # we need to make the rules to actually play the game. 
 # for a turn a player number ask another player if that other player has a 
