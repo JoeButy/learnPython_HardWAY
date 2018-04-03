@@ -1,0 +1,3 @@
+This is the first line that I will write in python to a new file!
+This is the second line I have ever written to a target file in py.
+Lets see if I can break it! "!$Y#" """ .""" _)_+))( <br>

@@ -1,0 +1,105 @@
+# go back thru all of the exercises and write all of the words and symbols
+
+python - this will run python in the terminal, or when folloed by a file
+	in the local directory will run that file. "quit()" will quit python if it is activated by 
+	running the python command with no file
+
+ls - this will list the files in the local directory
+
+cd - this will change the directory. 
+
+mkdir - this will make a directory (create a folder)
+
+print - this will print a list of characters to the terminal
+
+# - octothorpe, this will keep python from running past this point in a line
+
+$ - dollar sign, indicates end of terminal prompt macOS terminal
+
++ - plus sign, can concat character string, or be used for addition
+
+- - minus sign, this can be used to preform subtraction, or indicate a negative number.
+
+/ - slash, escape character, this can be used for division and to denote special characters "\\" -> "\"
+
+* - asterisk, this can be used to indicate a varaible number of inputs for function inputs,
+	or it can be used to preform multiplication
+
+% - percentage, this is used in strings to indicate a wildcard place holder. and after
+	a string to indicate what set of varaibles should be used to fill those holders.
+	Also can be used to preform the modulo (a % b)
+
+< - less-than sign, this can be used a comparison
+
+> - greater-than sign, this can be used as a comparison
+
+<= - less-than-eqaul, this can be used as a comparison
+
+>= - greater-than-equal, this can be used as a comparison
+
+, - comma, seperates list items, this can be used in a print command to keep the print function from line breaking
+
+( - open parenthesis, used to indicate beginging of list
+
+) - closed parenthesis, used to indicate end of list
+
+_ - underscore, typically used in place of space in names of functions or variables
+
+" - double quote, indicates string
+
+' - single quote, indicates string
+
+""" tripple double quote, indicates long string, that allows line breaks without \n being used.
+
+%s - string token
+
+%d - decimal token
+
+%r - debug mode (raw) token
+
+round() - round function
+
+= - equals, this can be used to set variables
+
+\n - line feed (new line)
+
+\t - tab character
+
+raw_input() - this will prompt the user, it can take an argument, that will be printed
+
+pydoc - this is a place to find information on specific python words
+
+sys - system module, or library
+
+agrv - argument variable module in the system lib 
+
+open() - open function, takes an argument and makes a file object if the file is found.
+
+.read() - read operator, this operates on a file object and reads the file content
+
+.write() - write operator, this operates on a file object, clears the file and writes to it. 
+
+.close() - close operator, this operates on a file object and closes the file. 
+	can be avoided by proper use of with statements.
+
+.seek() - seek operator, operator runs on file object. reset the byte position in a file object, will take arguent
+	to set the byte position to be not default 
+
+.readline() - readline operator, operator runs on a file object, will read the current line,
+	can take a maximum byte parameter.
+
+os.path - os.path library
+
+exists - os.path library, exists module, will boolean file existence.
+
+def - function definition, this will begin a function 
+
+: - colon, this will serve to initiate the code in loops and functions.
+
+; - semi-colon, this will allow multiple lines to run on one line. 
+
++= - add to variable, will add a specific amount to variable, "x=x+y" === "x+=y"
+
+-= - subtract from variable, will subtract a specific amount form a variable, 
+	"x=x-y" === "x-=y"
+

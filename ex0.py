@@ -1,0 +1,1 @@
+setting up the terminals and what have you's

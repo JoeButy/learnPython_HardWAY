@@ -1,0 +1,5 @@
+md -Path 'C:\Scripts\newDir3'
+
+New-Item -ItemType directory -Path C:\Scripts\newDir
+
+new-item c:\dir1 -itemtype directory
